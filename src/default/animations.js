@@ -3,8 +3,8 @@
 export default {
     toggle: (props) => {
         return {
-            animation: { rotateZ: props.node.toggled ? 90 : 0 },
-            duration: 300
+            animation: { rotateZ: props.node.toggled ? 180 : 0 },
+            duration: 400
         };
     },
     drawer: (/* props */) => {
@@ -16,6 +16,18 @@ export default {
             leave: {
                 animation: 'slideUp',
                 duration: 300
+            }
+        };
+    },
+    searchItem: () => {
+        return {
+            enter: {
+                animation: { opacity: 1 },
+                duration: 150
+            },
+            leave: {
+                animation: { opacity: 0 },
+                duration: 150
             }
         };
     }

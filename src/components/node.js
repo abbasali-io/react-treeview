@@ -8,12 +8,30 @@ import NodeHeader from './header';
 class TreeNode extends React.Component {
     constructor(props){
         super(props);
-        this.onClick = this.onClick.bind(this);
+        this.onEvent = this.onEvent.bind(this);
     }
-    onClick(){
-        let toggled = !this.props.node.toggled;
-        let onToggle = this.props.onToggle;
-        if(onToggle){ onToggle(this.props.node, toggled); }
+    onEvent(type = 'toggled'){
+        const {node, updateMe, state, options} = this.props;
+        switch(type) {
+            case 'toggled': {
+                this.props.onToggle(node, updateMe, state, options);
+                break;
+            }
+            case 'active': {
+                this.props.onActive(node, updateMe, state, options);
+                break;
+            }
+            case 'select': {
+                this.props.onSelected(node, updateMe, state, options);
+                break;
+            }
+            case 'firstChild': {
+                this.props.onFirstChildSelected(node, updateMe, state, options);
+                break;
+            }
+            default:
+            break;
+        }
     }
     animations(){
         const props = this.props;
@@ -21,11 +39,11 @@ class TreeNode extends React.Component {
         let anim = Object.assign({}, props.animations, props.node.animations);
         return {
             toggle: anim.toggle(this.props),
-            drawer: anim.drawer(this.props)
+            drawer: anim.drawer(this.props),
+            searchItem: anim.searchItem(this.props)
         };
     }
     decorators(){
-        // Merge Any Node Based Decorators Into The Pack
         const props = this.props;
         let nodeDecorators = props.node.decorators || {};
         return Object.assign({}, props.decorators, nodeDecorators);
@@ -33,11 +51,21 @@ class TreeNode extends React.Component {
     render(){
         const decorators = this.decorators();
         const animations = this.animations();
+        if (this.props.node.visibled) {
+            return (
+            <VelocityTransitionGroup {...animations.searchItem}>
+                {
+                    !this.props.state.onSearching &&
+                    <li className="list-group-item" ref="topLevel">
+                        { this.renderHeader(decorators, animations) }
+                        { this.renderDrawer(decorators, animations) }
+                    </li>
+                }
+            </VelocityTransitionGroup>
+            );
+        }
         return (
-            <li style={this.props.style.base} ref="topLevel">
-                {this.renderHeader(decorators, animations)}
-                {this.renderDrawer(decorators, animations)}
-            </li>
+            this.renderDrawer(decorators, animations)
         );
     }
     renderDrawer(decorators, animations){
@@ -57,26 +85,24 @@ class TreeNode extends React.Component {
             <NodeHeader
                 decorators={decorators}
                 animations={animations}
-                style={this.props.style}
                 node={Object.assign({}, this.props.node)}
-                onClick={this.onClick}
+                onEvent={this.onEvent}
+                use={this.props.use}
+                options={this.props.options}
             />
         );
     }
     renderChildren(decorators){
-        if(this.props.node.loading){ return this.renderLoading(decorators); }
-        let children = this.props.node.children;
+        if(this.props.node.loading && this.props.node.visibled){ return this.renderLoading(decorators); }
+        let children = this.props.node[this.props.options.nodeName];
         if (!Array.isArray(children)) { children = children ? [children] : []; }
         return (
-            <ul style={this.props.style.subtree} ref="subtree">
+            <ul className="treeview-node list-group" ref="subtree">
                 {children.map((child, index) =>
                     <TreeNode
-                        {...this._eventBubbles()}
                         key={child.id || index}
                         node={child}
-                        decorators={this.props.decorators}
-                        animations={this.props.animations}
-                        style={this.props.style}
+                        {...this._eventBubbles()}
                     />
                 )}
             </ul>
@@ -84,27 +110,47 @@ class TreeNode extends React.Component {
     }
     renderLoading(decorators){
         return (
-            <ul style={this.props.style.subtree}>
-                <li>
-                    <decorators.Loading style={this.props.style.loading}/>
+            <ul className="treeview-node list-group">
+                <li className="list-group-item">
+                    <decorators.Loading/>
                 </li>
             </ul>
         );
     }
     _eventBubbles(){
-        return { onToggle: this.props.onToggle };
+        return {
+            state: this.props.state,
+            use: this.props.use,
+            options: this.props.options,
+            updateMe: this.props.updateMe,
+            onToggle: this.props.onToggle,
+            onActive: this.props.onActive,
+            onSelected: this.props.onSelected,
+            onFirstChildSelected: this.props.onFirstChildSelected,
+            animations: this.props.animations,
+            decorators: this.props.decorators
+        };
     }
 }
 
 TreeNode.propTypes = {
-    style: React.PropTypes.object.isRequired,
     node: React.PropTypes.object.isRequired,
+    state: React.PropTypes.oneOfType([
+        React.PropTypes.object,
+        React.PropTypes.array
+    ]).isRequired,
+    updateMe: React.PropTypes.func.isRequired,
+    use: React.PropTypes.object,
     decorators: React.PropTypes.object.isRequired,
     animations: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.bool
     ]).isRequired,
-    onToggle: React.PropTypes.func
+    options: React.PropTypes.object,
+    onToggle: React.PropTypes.func,
+    onActive: React.PropTypes.func,
+    onSelected: React.PropTypes.func,
+    onFirstChildSelected: React.PropTypes.func
 };
 
 export default TreeNode;

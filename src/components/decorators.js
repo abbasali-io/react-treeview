@@ -1,78 +1,145 @@
 'use strict';
 
 import React from 'react';
-import Radium from 'radium';
 import {VelocityComponent} from 'velocity-react';
 
-const Loading = (props) => {
+const Loading = () => {
     return (
-        <div style={props.style}>
+        <div className="loading">
             loading...
         </div>
     );
 };
 
-Loading.propTypes = {
-    style: React.PropTypes.object
-};
-
 const Toggle = (props) => {
-    const style = props.style;
-    const height = style.height;
-    const width = style.width;
-    let midHeight = height * 0.5;
-    let points = `0,0 0,${height} ${width},${midHeight}`;
+    const node = props.node;
+    const glyphName = !node.toggled ? 'glyphicon glyphicon-plus' : 'glyphicon glyphicon-minus';
     return (
-        <div style={style.base}>
-            <div style={style.wrapper}>
-                <svg height={height} width={width}>
-                    <polygon
-                        points={points}
-                        style={style.arrow}
-                    />
-                </svg>
-            </div>
-        </div>
+        <span className={glyphName}></span>
     );
 };
 
 Toggle.propTypes = {
-    style: React.PropTypes.object
+    node: React.PropTypes.object.isRequired
 };
 
 const Header = (props) => {
-    const style = props.style;
     return (
-        <div style={style.base}>
-            <div style={style.title}>
-                {props.node.name}
-            </div>
+        <div>
+            {props.node[props.options.itemName]}
         </div>
     );
 };
 
 Header.propTypes = {
-    style: React.PropTypes.object,
-    node: React.PropTypes.object.isRequired
+    node: React.PropTypes.object.isRequired,
+    options: React.PropTypes.object.isRequired
 };
 
-@Radium
+const Selected = (props) => {
+    return (
+        <input type="checkbox" checked={props.node[props.options.selectedName]} onChange={() => props.onEvent('select')}/>
+    );
+};
+
+Selected.propTypes = {
+    node: React.PropTypes.object.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
+    options: React.PropTypes.object.isRequired
+};
+
+const FirstChildSelected = (props) => {
+    return (
+        <span className="glyphicon glyphicon-sort-by-attributes" onClick={() => props.onEvent('firstChild')}></span>
+    );
+};
+
+FirstChildSelected.propTypes = {
+    onEvent: React.PropTypes.func.isRequired
+};
+
+const ColSelected = (props) => {
+    const { maxLevel, colSelected, onEvent } = props;
+    const items = [];
+    const itemTemplate = (i, callback) => {
+        return <input key={i} type="checkbox" checked={colSelected[i]} onChange={() => callback('col', i)}/>;
+    };
+    for (var i = 0; i <= maxLevel; i++) {
+        items.push(itemTemplate(i, onEvent));
+    }
+    return (
+        <div className="col-selected">
+            {items}
+        </div>
+    );
+};
+
+ColSelected.propTypes = {
+    maxLevel: React.PropTypes.number.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
+    colSelected: React.PropTypes.array
+};
+
+const SearchTree = (props) => {
+    return (
+        <div className="input-group">
+            <span className="input-group-addon">
+              <i className="fa fa-search"></i>
+            </span>
+            <input type="text"
+                className="form-control"
+                placeholder="Search the tree..."
+                onKeyUp={(e) => props.onEvent('search', e)}
+            />
+        </div>
+    );
+};
+
+SearchTree.propTypes = {
+    onEvent: React.PropTypes.func
+};
+
 class Container extends React.Component {
     constructor(props){
         super(props);
     }
     render(){
-        const {style, decorators, terminal, onClick, node} = this.props;
+        const { decorators, terminal, onEvent, node, className, use} = this.props;
         return (
             <div
                 ref="clickable"
-                onClick={onClick}
-                style={style.container}>
-                { !terminal ? this.renderToggle() : null }
-                <decorators.Header
-                    node={node}
-                    style={style.header}
-                />
+                className={className}
+                onClick={use.active ? () => onEvent('active') : ()=>{}}
+                style={{cursor: 'pointer'}}>
+                <div onClick={() => onEvent()} className="toggle" style={{display: 'inline-block'}}>
+                    { !terminal ? this.renderToggle() : null }
+                </div>
+                {
+                    use.select &&
+                    <div className="selected" style={{display: 'inline-block'}}>
+                        <decorators.Selected
+                            node={node}
+                            onEvent={onEvent}
+                            options={this.props.options}
+                        />
+                    </div>
+                }
+                <div className="header" style={{display: 'inline-block'}}>
+                    <decorators.Header
+                        node={node}
+                        options={this.props.options}
+                    />
+                </div>
+                {
+                    (
+                        use.firstChildSelect &&
+                        Array.isArray(node[this.props.options.nodeName]) &&
+                        !node.loading
+                    ) &&
+                    <div className="selected firstChild" style={{display: 'inline-block'}}>
+                        <decorators.FirstChildSelected onEvent={onEvent} />
+                    </div>
+                }
             </div>
         );
     }
@@ -88,26 +155,32 @@ class Container extends React.Component {
         );
     }
     renderToggleDecorator(){
-        const {style, decorators} = this.props;
-        return (<decorators.Toggle style={style.toggle}/>);
+        const {decorators} = this.props;
+        return (<decorators.Toggle node={this.props.node} />);
     }
 }
 
 Container.propTypes = {
-    style: React.PropTypes.object.isRequired,
+    className: React.PropTypes.string,
     decorators: React.PropTypes.object.isRequired,
     terminal: React.PropTypes.bool.isRequired,
-    onClick: React.PropTypes.func.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
     animations: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.bool
     ]).isRequired,
-    node: React.PropTypes.object.isRequired
+    node: React.PropTypes.object.isRequired,
+    use: React.PropTypes.object,
+    options: React.PropTypes.object
 };
 
 export default {
     Loading,
     Toggle,
     Header,
+    Selected,
+    FirstChildSelected,
+    ColSelected,
+    SearchTree,
     Container
 };

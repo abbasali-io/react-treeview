@@ -20,33 +20,35 @@ class NodeHeader extends React.Component {
         return !deepEqual(props.animations, nextProps.animations, { strict: true });
     }
     render(){
-        const {style, decorators} = this.props;
-        const terminal = !this.props.node.children;
+        const {decorators} = this.props;
+        const terminal = !this.props.node[this.props.options.nodeName];
         const active = this.props.node.active;
-        const container = [style.link, active ? style.activeLink : null];
-        const headerStyles = Object.assign({ container }, this.props.style);
+        const className = active ? 'active' : '';
         return (
             <decorators.Container
-                style={headerStyles}
+                className={className}
                 decorators={decorators}
                 terminal={terminal}
-                onClick={this.props.onClick}
+                onEvent={this.props.onEvent}
                 animations={this.props.animations}
                 node={this.props.node}
+                use={this.props.use}
+                options={this.props.options}
             />
         );
     }
 }
 
 NodeHeader.propTypes = {
-    style: React.PropTypes.object.isRequired,
     decorators: React.PropTypes.object.isRequired,
     animations: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.bool
     ]).isRequired,
     node: React.PropTypes.object.isRequired,
-    onClick: React.PropTypes.func
+    use: React.PropTypes.object,
+    options: React.PropTypes.object,
+    onEvent: React.PropTypes.func
 };
 
 export default NodeHeader;
