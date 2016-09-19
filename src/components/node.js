@@ -9,25 +9,27 @@ class TreeNode extends React.Component {
     constructor(props){
         super(props);
         this.onEvent = this.onEvent.bind(this);
+        this._eventBubbles = this.props._eventBubbles;
     }
     onEvent(type = 'toggled'){
-        const {node, updateMe, state, options} = this.props;
+        const {updateMe, state, options} = this._eventBubbles;
+        const node = this.props.node;
         const eventParams = {node, updateMe, state, options};
         switch(type) {
             case 'toggled': {
-                this.props.onToggle(eventParams);
+                this._eventBubbles.onToggle(eventParams);
                 break;
             }
             case 'active': {
-                this.props.onActive(eventParams);
+                this._eventBubbles.onActive(eventParams);
                 break;
             }
             case 'select': {
-                this.props.onSelected(eventParams);
+                this._eventBubbles.onSelected(eventParams);
                 break;
             }
             case 'firstChild': {
-                this.props.onFirstChildSelected(eventParams);
+                this._eventBubbles.onFirstChildSelected(eventParams);
                 break;
             }
             default:
@@ -88,14 +90,14 @@ class TreeNode extends React.Component {
                 animations={animations}
                 node={Object.assign({}, this.props.node)}
                 onEvent={this.onEvent}
-                use={this.props.use}
-                options={this.props.options}
+                use={this._eventBubbles.use}
+                options={this._eventBubbles.options}
             />
         );
     }
     renderChildren(decorators){
         if(this.props.node.loading && this.props.node.__treeView_visibled){ return this.renderLoading(decorators); }
-        let children = this.props.node[this.props.options.nodeName];
+        let children = this.props.node[this._eventBubbles.options.nodeName];
         if (!Array.isArray(children)) { children = children ? [children] : []; }
         return (
             <ul className="treeview-node list-group" ref="subtree">
@@ -103,8 +105,8 @@ class TreeNode extends React.Component {
                     <TreeNode
                         key={child.id || index}
                         node={child}
-                        _eventBubbles={this.props._eventBubbles}
-                        {...this.props._eventBubbles}
+                        _eventBubbles={this._eventBubbles}
+                        {...this._eventBubbles}
                     />
                 )}
             </ul>
@@ -127,19 +129,7 @@ TreeNode.propTypes = {
         React.PropTypes.object,
         React.PropTypes.array
     ]).isRequired,
-    _eventBubbles: React.PropTypes.object.isRequired,
-    updateMe: React.PropTypes.func.isRequired,
-    use: React.PropTypes.object,
-    decorators: React.PropTypes.object.isRequired,
-    animations: React.PropTypes.oneOfType([
-        React.PropTypes.object,
-        React.PropTypes.bool
-    ]).isRequired,
-    options: React.PropTypes.object,
-    onToggle: React.PropTypes.func,
-    onActive: React.PropTypes.func,
-    onSelected: React.PropTypes.func,
-    onFirstChildSelected: React.PropTypes.func
+    _eventBubbles: React.PropTypes.object.isRequired
 };
 
 export default TreeNode;
