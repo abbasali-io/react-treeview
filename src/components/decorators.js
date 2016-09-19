@@ -12,15 +12,16 @@ const Loading = () => {
 };
 
 const Toggle = (props) => {
-    const node = props.node;
-    const glyphName = !node.toggled ? 'glyphicon glyphicon-plus' : 'glyphicon glyphicon-minus';
+    const toggled = props.toggled;
+    const glyphName = !toggled ? 'glyphicon glyphicon-plus' : 'glyphicon glyphicon-minus';
     return (
         <span className={glyphName}></span>
     );
 };
 
 Toggle.propTypes = {
-    node: React.PropTypes.object.isRequired
+    node: React.PropTypes.object.isRequired,
+    toggled: React.PropTypes.bool
 };
 
 const Header = (props) => {
@@ -156,7 +157,7 @@ class Container extends React.Component {
     }
     renderToggleDecorator(){
         const {decorators} = this.props;
-        return (<decorators.Toggle node={this.props.node} />);
+        return (<decorators.Toggle node={this.props.node} toggled={this.props.node.__treeView_toggled} />);
     }
 }
 
