@@ -9,15 +9,16 @@ class NodeHeader extends React.Component {
         super(props);
     }
     shouldComponentUpdate(nextProps){
-        const props = this.props;
-        const nextPropKeys = Object.keys(nextProps);
-        for(let i = 0; i < nextPropKeys.length; i++){
-            const key = nextPropKeys[i];
-            if(key === 'animations'){ continue; }
-            const isEqual = shallowEqual(props[key], nextProps[key]);
-            if(!isEqual){ return true; }
-        }
-        return !deepEqual(props.animations, nextProps.animations, { strict: true });
+        // const props = this.props;
+        // const nextPropKeys = Object.keys(nextProps);
+        // for(let i = 0; i < nextPropKeys.length; i++){
+        //     const key = nextPropKeys[i];
+        //     if(key === 'animations'){ continue; }
+        //     const isEqual = shallowEqual(props[key], nextProps[key]);
+        //     if(!isEqual){ return true; }
+        // }
+        // return !deepEqual(props.animations, nextProps.animations, { strict: true });
+        return true;
     }
     render(){
         const {decorators} = this.props;

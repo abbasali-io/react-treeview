@@ -27,28 +27,27 @@ const setTreeNode = (list = [], filterText, options, founded = false) => {
 		let eFounded = founded;
 		const hasChildren = Array.isArray(e[options.nodeName]);
 		if (eFounded) {
-			e.visibled = true;
+			e.__treeView_visibled = true;
 		} else if (defaultMatcher(filterText, e, options)) {
 			eFounded = true;
-			e.visibled = true;
+			e.__treeView_visibled = true;
 		} else {
-			e.visibled = false;
+			e.__treeView_visibled = false;
 		}
         if (hasChildren) {
-			if (eFounded){
-				e.toggled = true;
-			}
 			setTreeNode(e[options.nodeName], filterText, options, eFounded);
+			e.__treeView_toggled = true;
+			// e.__treeView_visibled = true;
         }
     });
 };
 
 export default {
-	onToggle: (node, updateMe, state, options) => {
-		const toggled = !node.toggled;
+	onToggle: ({node, updateMe, state, options}) => {
+		const toggled = !node.__treeView_toggled;
 		// if(state.prevNode){state.prevNode.active = false;}
         if(node[options.nodeName]){
-            node.toggled = toggled;
+            node.__treeView_toggled = toggled;
         }
         // node.active = true;
         // state.prevNode = node;
@@ -56,7 +55,7 @@ export default {
 			updateMe(state);
         }
     },
-    onActive: (node, updateMe, state) => {
+    onActive: ({node, updateMe, state}) => {
 		if(state.prevNode){state.prevNode.active = false;}
         node.active = true;
         state.prevNode = node;
@@ -64,28 +63,28 @@ export default {
 			updateMe(state);
         }
     },
-    onSelected: (node, updateMe, state, options) => {
+    onSelected: ({node, updateMe, state, options}) => {
 		const selected = !node[options.selectedName];
 		node[options.selectedName] = selected;
 		if(typeof updateMe === 'function') {
 			updateMe(state);
         }
     },
-    onSelectedCol: (level, updateMe, state, options) => {
-		if (!Array.isArray(state.data)){
-			state.data = [state.data];
+    onSelectedCol: ({value: level, updateMe, data, state, options}) => {
+		if (!Array.isArray(data)){
+			data = [data];
 		}
-		state.colSelected[level] = !state.colSelected[level];
-		setColNode(state.data, level, state.colSelected[level], options);
+		state.__treeView_colSelected[level] = !state.__treeView_colSelected[level];
+		setColNode(data, level, state.__treeView_colSelected[level], options);
 		if(typeof updateMe === 'function') {
-			updateMe();
+			updateMe(state);
         }
     },
-    onFirstChildSelected: (node, updateMe, state, options) => {
+    onFirstChildSelected: ({node, updateMe, state, options}) => {
 		const selected = !node[options.selectedName];
 		const children = node[options.nodeName];
 		node[options.selectedName] = selected;
-		node.toggled = selected;
+		node.__treeView_toggled = true;
 		if(Array.isArray(children)) {
 			children.map((data) => {
 				data[options.selectedName] = selected;
@@ -95,23 +94,23 @@ export default {
 			updateMe(state);
         }
     },
-    onSearch: (ele, updateMe, state, options) => {
-		clearTimeout(state.waitSearching);
+    onSearch: ({value: ele, updateMe, data, state, options}) => {
+		clearTimeout(state.__treeView_waitSearching);
 		const filterText = ele.target.value;
-		state.waitSearching = setTimeout(() => {
-			state.onSearching = true;
+		state.__treeView_waitSearching = setTimeout(() => {
+			state.__treeView_onSearching = true;
 			updateMe(state);
 			setTimeout(() => {
-				if (!Array.isArray(state.data)){
-					state.data = [state.data];
+				if (!Array.isArray(data)){
+					data = [data];
 				}
-				setTreeNode(state.data, filterText, options);
+				setTreeNode(data, filterText, options);
 				if(typeof updateMe === 'function') {
-					state.onSearching = false;
+					state.__treeView_onSearching = false;
 					updateMe(state);
 				}
-			}, 300);
-		}, 300);
+			}, 150);
+		}, 500);
     },
     useEvent: {
 		active: false,

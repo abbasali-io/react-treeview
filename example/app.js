@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import TreeView from '../src/index';
 
 import data from './data';
-import * as filters from './filter';
+// import * as filters from './filter';
 
 // Example: Customising The Header Decorator To Include Icons
 // const decorators = {};
@@ -34,27 +34,26 @@ import * as filters from './filter';
 class DemoTree extends React.Component {
     constructor(props){
         super(props);
-        this.state = {data};
-        this.onFilterMouseUp = this.onFilterMouseUp.bind(this);
+        this.state = {data, storeTree: {}};
+        // this.onFilterMouseUp = this.onFilterMouseUp.bind(this);
         this.updateMe = this.updateMe.bind(this);
     }
     updateMe(){
-        // เหลือ function สำหรับตัด state ที่ app สร้างขึ้นมาออก
         this.forceUpdate();
     }
-    onFilterMouseUp(e){
-        const filter = e.target.value.trim();
-        if(!filter){ return this.setState({data}); }
-        var filtered = filters.filterTree(data, filter);
-        filtered = filters.expandFilteredNodes(filtered, filter);
-        this.setState({data: filtered});
-    }
+    // onFilterMouseUp(e){
+    //     const filter = e.target.value.trim();
+    //     if(!filter){ return this.setState({data}); }
+    //     var filtered = filters.filterTree(data, filter);
+    //     filtered = filters.expandFilteredNodes(filtered, filter);
+    //     this.setState({data: filtered});
+    // }
     render(){
         return (
             <div>
                 <TreeView
                     data={this.state.data}
-                    state={this.state}
+                    state={this.state.storeTree}
                     updateMe={this.updateMe}
                     use={
                         {
@@ -63,6 +62,9 @@ class DemoTree extends React.Component {
                             colSelect: true,
                             search: true
                         }
+                    }
+                    options={
+                        { nodeName: 'subs' }
                     }
                 />
             </div>
