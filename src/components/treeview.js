@@ -17,22 +17,19 @@ class TreeView extends React.Component {
         this._render = this._render.bind(this);
 
         this._event = this._prepareEvent();
-        const data = this._prepareDefaultData(this.props.data);
-        if (data.length > 0) {
-            this._prepareData();
-            for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
-                this._status.__TREEVIEW_COL_SELECTED.push(false);
-            }
+
+        this._prepareData();
+        for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
+            this._status.__TREEVIEW_COL_SELECTED.push(false);
         }
     }
     componentWillReceiveProps(nextProps) {
-        const data = this._prepareDefaultData(nextProps.data);
-        if (data.length > 0 && this.props.data !== nextProps.data) {
+        if (this.props.data !== nextProps.data) {
             this._prepareData(nextProps.data);
             for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
                 this._status.__TREEVIEW_COL_SELECTED.push(false);
             }
-            this.render();
+            this._render();
         }
     }
     onEvent(type = 'col', value) {
@@ -104,16 +101,20 @@ class TreeView extends React.Component {
             _status.__TREEVIEW_MAXLEVEL = maxLv;
         }
         data = this._prepareDefaultData(data);
-        data.forEach((e, i) => {
-            e.__TREEVIEW_LEVEL = [...level, i];
-            e.__TREEVIEW_VISIBLED = true;
-            e.__TREEVIEW_TOGGLED = true;
-            const children = e[this.props.options.nodeName];
-            if (Array.isArray(children)) {
-                e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this.props.options.nodeName];
-                this._prepareData(children, maxLv + 1, _status, e.__TREEVIEW_LEVEL);
-            }
-        });
+        if (data.length > 0) {
+            data.forEach((e, i) => {
+                e.__TREEVIEW_LEVEL = [...level, i];
+                e.__TREEVIEW_VISIBLED = true;
+                e.__TREEVIEW_TOGGLED = true;
+                const children = e[this.props.options.nodeName];
+                if (Array.isArray(children)) {
+                    e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this.props.options.nodeName];
+                    this._prepareData(children, maxLv + 1, _status, e.__TREEVIEW_LEVEL);
+                } else {
+                    e[this.props.options.nodeName] = [];
+                }
+            });
+        }
     }
     _prepareEvent(){
         return {

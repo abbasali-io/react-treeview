@@ -21,7 +21,7 @@ class NodeHeader extends React.Component {
     }
     render(){
         const {decorators} = this.props;
-        const terminal = !this.props.node[this.props.options.nodeName];
+        const terminal = this.props.node[this.props.options.nodeName].length === 0;
         const active = this.props.node.active;
         const className = active ? 'active' : '';
         return (
