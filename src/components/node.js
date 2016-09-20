@@ -64,7 +64,7 @@ class TreeNode extends React.Component {
             <VelocityTransitionGroup {...animations.searchItem}>
                 {
                     !this.props._status.__TREEVIEW_ONSEARCHING &&
-                    <li className="treeview-node list-group-item" ref="topLevel">
+                    <li className="treeview-node-item list-group-item" ref="topLevel">
                         { this.renderHeader(decorators, animations) }
                         { this.props.node[this._event.options.nodeName].length > 0 && this.renderDrawer(decorators, animations) }
                     </li>
