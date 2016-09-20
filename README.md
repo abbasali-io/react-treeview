@@ -22,9 +22,9 @@
 ### แก้เสร็จแล้ว จะ build สำหรับ prepublish ขึ้น npm
 `npm run prepublish`
 
-### Prop Values Required
+## Prop Values Required
 
-#### data
+### data
 `React.PropTypes.Array.Required` or `React.PropTypes.Object.Required`
 
 ### use จะใช้งานส่วนใดบ้าง default (false) ทุกตัว
@@ -40,7 +40,7 @@
 
 ### options (ใช้กรณี key ของแต่ละ node ไม่ตรงกับ default)
 `React.PropTypes.object`
-#### default
+default
 ```javascript
 {
 	itemName: 'name',
@@ -50,9 +50,9 @@
 ```
 
 ### decorators (Overwrite การแสดงผลในส่วนต่างๆ)
-#### ดูจาก `src/components/decorators.js`
-#### รับต่าแค่ตัวที่จะ overwrite
-##### โดยจะได้
+ดูจาก `src/components/decorators.js`
+รับต่าแค่ตัวที่จะ overwrite
+โดยจะได้
 ```javascript
 Loading.propTypes = undefined;
 
@@ -87,7 +87,7 @@ SearchTree.propTypes = {
 };
 ```
 
-##### ระวังการ Overwrite decorators.Container ส่วนนี้ default เป็นส่วนที่ส่งค่า props ด้านบนให้ decorators แต่ละตัว
+ระวังการ Overwrite decorators.Container ส่วนนี้ default เป็นส่วนที่ส่งค่า props ด้านบนให้ decorators แต่ละตัว
 ```javascript
 Container.propTypes = {
     className: React.PropTypes.string,
@@ -105,11 +105,11 @@ Container.propTypes = {
 ```
 
 ### [Velocity] animations (Overwrite Handle Animations)
-#### ดูจาก `src/components/decorators.js`
-#### รับต่าแค่ตัวที่จะ overwrite
+ดูจาก `src/components/decorators.js`
+รับต่าแค่ตัวที่จะ overwrite
 
 ### (Overwrite Event Animations )
 `React.PropTypes.func`
-#### arguments แต่ละตัวดูจาก `default/events.js, components/treeview.js, components/node.js`
-#### onToggle, onActive, onSelected, onSelectedCol, onFirstChildSelected, onSearch
-##### เมื่อ overwrite ให้เซตค่าตามที่ต้องการ ตาม arguments ที่ได้รับมา ดูตัวอย่างจาก events.js จากในไฟล์ข้างบน โดย arguments ที่ส่งเข้าแต่ละ event reference กับค่าต้นทางอยู่แล้วหากเรียบร้อยจะมี function _render สั่ง render ใหม่อีกรอบตาม cycle ปกติของ React
+arguments แต่ละตัวดูจาก `default/events.js, components/treeview.js, components/node.js`
+onToggle, onActive, onSelected, onSelectedCol, onFirstChildSelected, onSearch
+เมื่อ overwrite ให้เซตค่าตามที่ต้องการ ตาม arguments ที่ได้รับมา ดูตัวอย่างจาก events.js จากในไฟล์ข้างบน โดย arguments ที่ส่งเข้าแต่ละ event reference กับค่าต้นทางอยู่แล้วหากเรียบร้อยจะมี function _render สั่ง render ใหม่อีกรอบตาม cycle ปกติของ React
