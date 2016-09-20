@@ -157,7 +157,7 @@ class Container extends React.Component {
     }
     renderToggleDecorator(){
         const {decorators} = this.props;
-        return (<decorators.Toggle node={this.props.node} toggled={this.props.node.__treeView_toggled} />);
+        return (<decorators.Toggle node={this.props.node} toggled={this.props.node.__TREEVIEW_TOGGLED} />);
     }
 }
 

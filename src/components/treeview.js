@@ -11,21 +11,29 @@ import defaultOptions from '../default/options';
 class TreeView extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            data: this.props.data
+        };
+        this._status = {};
+        this._status.__TREEVIEW_COL_SELECTED = [];
         this.onEvent = this.onEvent.bind(this);
-        this._prepareState();
-        this._eventBubbles = this._event();
+        this._render = this._render.bind(this);
 
-        const state = this.props.state;
-        state.__treeView_colSelected = [];
+        this._prepareData();
+        this._event = this._prepareEvent();
 
-        for (var i = 0; i <= state.__treeView_maxLevel; i++) {
-            state.__treeView_colSelected.push(false);
+        for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
+            this._status.__TREEVIEW_COL_SELECTED.push(false);
         }
     }
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+    }
     onEvent(type = 'col', value) {
-        const { updateMe, options, state } = this._eventBubbles;
-        const data = this.props.data;
-        const eventParams = {value, updateMe, data, state, options};
+        const _render = this._render;
+        const { options, _status } = this._event;
+        const data = this.state.data;
+        const eventParams = {value, _render, data, _status, options};
         switch(type) {
             case 'col': {
                 this.props.onSelectedCol(eventParams);
@@ -39,24 +47,27 @@ class TreeView extends React.Component {
             break;
         }
     }
+    _render() {
+        this.forceUpdate();
+    }
     render(){
-        const decorators = this.props.decorators;
-        let data = this.props.data;
+        const decorators = this._event.decorators;
+        let data = this.state.data;
         if(!Array.isArray(data)){ data = [data]; }
         return (
             <div className="treeview">
                 {
-                    this.props.use.search &&
+                    this._event.use.search &&
                     <decorators.SearchTree
                         onEvent={this.onEvent}
                     />
                 }
                 {
-                    this.props.use.colSelect &&
+                    this._event.use.colSelect &&
                     <decorators.ColSelected
-                        maxLevel={this.props.state.__treeView_maxLevel}
+                        maxLevel={this._event._status.__TREEVIEW_MAXLEVEL}
                         onEvent={this.onEvent}
-                        colSelected={this.props.state.__treeView_colSelected}
+                        colSelected={this._event._status.__TREEVIEW_COL_SELECTED}
                     />
                 }
                 <ul className="list-group" ref="treeBase">
@@ -64,38 +75,37 @@ class TreeView extends React.Component {
                         <TreeNode
                             key={node.id || index}
                             node={node}
-                            _eventBubbles={this._eventBubbles}
-                            {...this._eventBubbles}
+                            _event={this._event}
+                            {...this._event}
                         />
                     )}
                 </ul>
             </div>
         );
     }
-    _prepareState(data = this.props.data, maxLv = 0, state = this.props.state, level = []) {
-        if (state.__treeView_maxLevel < maxLv || state.__treeView_maxLevel === undefined) {
-            state.__treeView_maxLevel = maxLv;
+    _prepareData(data = this.state.data, maxLv = 0, _status = this._status, level = []) {
+        if (_status.__TREEVIEW_MAXLEVEL < maxLv || _status.__TREEVIEW_MAXLEVEL === undefined) {
+            _status.__TREEVIEW_MAXLEVEL = maxLv;
         }
         if(!Array.isArray(data)){ data = [data]; }
         data.forEach((e, i) => {
-            e.__treeView_level = [...level, i];
-            e.__treeView_visibled = true;
-            e.__treeView_toggled = true;
+            e.__TREEVIEW_LEVEL = [...level, i];
+            e.__TREEVIEW_VISIBLED = true;
+            e.__TREEVIEW_TOGGLED = true;
             const children = e[this.props.options.nodeName];
             if (Array.isArray(children)) {
-                e.__treeView_level = [...e.__treeView_level, this.props.options.nodeName];
-                this._prepareState(children, maxLv + 1, state, e.__treeView_level);
+                e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this.props.options.nodeName];
+                this._prepareData(children, maxLv + 1, _status, e.__TREEVIEW_LEVEL);
             }
         });
     }
-    _event(){
+    _prepareEvent(){
         return {
-            state: this.props.state,
+            _status: this._status,
             use: Object.assign(defaultEvents.useEvent, this.props.use),
             animations: Object.assign(defaultAnimations, this.props.animations),
             options: Object.assign(defaultOptions, this.props.options),
             decorators: Object.assign(defaultDecorators, this.props.decorators),
-            updateMe: this.props.updateMe,
             onToggle: this.props.onToggle,
             onActive: this.props.onActive,
             onSelected: this.props.onSelected,
@@ -105,15 +115,10 @@ class TreeView extends React.Component {
 }
 
 TreeView.propTypes = {
-    state: React.PropTypes.oneOfType([
-        React.PropTypes.object,
-        React.PropTypes.array
-    ]).isRequired,
     data: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.array
     ]).isRequired,
-    updateMe: React.PropTypes.func.isRequired,
     use: React.PropTypes.object,
     animations: React.PropTypes.oneOfType([
         React.PropTypes.object,

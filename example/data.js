@@ -571,7 +571,7 @@ export default [{
       }
    ]
 },
-{
+/*{
    _id: '/126',
    name: 'soccer',
    color: '',
@@ -9706,4 +9706,4 @@ export default [{
          id: 21947
       }
    ]
-}];
+}*/];

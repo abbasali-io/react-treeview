@@ -9,27 +9,29 @@ class TreeNode extends React.Component {
     constructor(props){
         super(props);
         this.onEvent = this.onEvent.bind(this);
-        this._eventBubbles = this.props._eventBubbles;
+        this._render = this._render.bind(this);
+        this._event = this.props._event;
     }
     onEvent(type = 'toggled'){
-        const {updateMe, state, options} = this._eventBubbles;
+        const _render = this._render;
+        const {_status, options} = this._event;
         const node = this.props.node;
-        const eventParams = {node, updateMe, state, options};
+        const eventParams = {node, _render, _status, options};
         switch(type) {
             case 'toggled': {
-                this._eventBubbles.onToggle(eventParams);
+                this._event.onToggle(eventParams);
                 break;
             }
             case 'active': {
-                this._eventBubbles.onActive(eventParams);
+                this._event.onActive(eventParams);
                 break;
             }
             case 'select': {
-                this._eventBubbles.onSelected(eventParams);
+                this._event.onSelected(eventParams);
                 break;
             }
             case 'firstChild': {
-                this._eventBubbles.onFirstChildSelected(eventParams);
+                this._event.onFirstChildSelected(eventParams);
                 break;
             }
             default:
@@ -51,14 +53,17 @@ class TreeNode extends React.Component {
         let nodeDecorators = props.node.decorators || {};
         return Object.assign({}, props.decorators, nodeDecorators);
     }
+    _render() {
+        this.forceUpdate();
+    }
     render(){
         const decorators = this.decorators();
         const animations = this.animations();
-        if (this.props.node.__treeView_visibled) {
+        if (this.props.node.__TREEVIEW_VISIBLED) {
             return (
             <VelocityTransitionGroup {...animations.searchItem}>
                 {
-                    !this.props.state.__treeView_onSearching &&
+                    !this.props._status.__TREEVIEW_ONSEARCHING &&
                     <li className="treeview-node list-group-item" ref="topLevel">
                         { this.renderHeader(decorators, animations) }
                         { this.renderDrawer(decorators, animations) }
@@ -72,7 +77,7 @@ class TreeNode extends React.Component {
         );
     }
     renderDrawer(decorators, animations){
-        const toggled = this.props.node.__treeView_toggled;
+        const toggled = this.props.node.__TREEVIEW_TOGGLED;
         if(!animations && !toggled){ return null; }
         if(!animations && toggled){
             return this.renderChildren(decorators, animations);
@@ -90,14 +95,14 @@ class TreeNode extends React.Component {
                 animations={animations}
                 node={Object.assign({}, this.props.node)}
                 onEvent={this.onEvent}
-                use={this._eventBubbles.use}
-                options={this._eventBubbles.options}
+                use={this._event.use}
+                options={this._event.options}
             />
         );
     }
     renderChildren(decorators){
-        if(this.props.node.loading && this.props.node.__treeView_visibled){ return this.renderLoading(decorators); }
-        let children = this.props.node[this._eventBubbles.options.nodeName];
+        if(this.props.node.loading && this.props.node.__TREEVIEW_VISIBLED){ return this.renderLoading(decorators); }
+        let children = this.props.node[this._event.options.nodeName];
         if (!Array.isArray(children)) { children = children ? [children] : []; }
         return (
             <ul className="treeview-node list-group" ref="subtree">
@@ -105,8 +110,8 @@ class TreeNode extends React.Component {
                     <TreeNode
                         key={child.id || index}
                         node={child}
-                        _eventBubbles={this._eventBubbles}
-                        {...this._eventBubbles}
+                        _event={this._event}
+                        {...this._event}
                     />
                 )}
             </ul>
@@ -125,11 +130,11 @@ class TreeNode extends React.Component {
 
 TreeNode.propTypes = {
     node: React.PropTypes.object.isRequired,
-    state: React.PropTypes.oneOfType([
+    _status: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.array
     ]).isRequired,
-    _eventBubbles: React.PropTypes.object.isRequired
+    _event: React.PropTypes.object.isRequired
 };
 
 export default TreeNode;

@@ -34,7 +34,7 @@ import data from './data';
 class DemoTree extends React.Component {
     constructor(props){
         super(props);
-        this.state = {data, storeTree: {}};
+        this.state = {data};
         // this.onFilterMouseUp = this.onFilterMouseUp.bind(this);
         this.updateMe = this.updateMe.bind(this);
     }
@@ -53,8 +53,6 @@ class DemoTree extends React.Component {
             <div>
                 <TreeView
                     data={this.state.data}
-                    state={this.state.storeTree}
-                    updateMe={this.updateMe}
                     use={
                         {
                             select: true,
