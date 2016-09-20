@@ -11,28 +11,34 @@ import defaultOptions from '../default/options';
 class TreeView extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            data: this.props.data
-        };
         this._status = {};
         this._status.__TREEVIEW_COL_SELECTED = [];
         this.onEvent = this.onEvent.bind(this);
         this._render = this._render.bind(this);
 
-        this._prepareData();
         this._event = this._prepareEvent();
-
-        for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
-            this._status.__TREEVIEW_COL_SELECTED.push(false);
+        const data = this._prepareDefaultData(this.props.data);
+        if (data.length > 0) {
+            this._prepareData();
+            for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
+                this._status.__TREEVIEW_COL_SELECTED.push(false);
+            }
         }
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        const data = this._prepareDefaultData(nextProps.data);
+        if (data.length > 0 && this.props.data !== nextProps.data) {
+            this._prepareData(nextProps.data);
+            for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
+                this._status.__TREEVIEW_COL_SELECTED.push(false);
+            }
+            this.render();
+        }
     }
     onEvent(type = 'col', value) {
         const _render = this._render;
         const { options, _status } = this._event;
-        const data = this.state.data;
+        const data = this.props.data;
         const eventParams = {value, _render, data, _status, options};
         switch(type) {
             case 'col': {
@@ -52,8 +58,7 @@ class TreeView extends React.Component {
     }
     render(){
         const decorators = this._event.decorators;
-        let data = this.state.data;
-        if(!Array.isArray(data)){ data = [data]; }
+        let data = this._prepareDefaultData(this.props.data);
         return (
             <div className="treeview">
                 {
@@ -83,11 +88,22 @@ class TreeView extends React.Component {
             </div>
         );
     }
-    _prepareData(data = this.state.data, maxLv = 0, _status = this._status, level = []) {
+
+    _prepareDefaultData(data) {
+        if (Array.isArray(data)) {
+            return data;
+        }
+        const nodeName = this._event.options.nodeName;
+        if (typeof data === 'object') {
+            if (data[nodeName]) { return [data]; }
+        }
+        return [];
+    }
+    _prepareData(data = this.props.data, maxLv = 0, _status = this._status, level = []) {
         if (_status.__TREEVIEW_MAXLEVEL < maxLv || _status.__TREEVIEW_MAXLEVEL === undefined) {
             _status.__TREEVIEW_MAXLEVEL = maxLv;
         }
-        if(!Array.isArray(data)){ data = [data]; }
+        data = this._prepareDefaultData(data);
         data.forEach((e, i) => {
             e.__TREEVIEW_LEVEL = [...level, i];
             e.__TREEVIEW_VISIBLED = true;
