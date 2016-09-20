@@ -27,12 +27,6 @@
 #### data
 `React.PropTypes.Array.Required` or `React.PropTypes.Object.Required`
 
-#### state (สำหรับเก็บค่า status ที่จำเป็น
-`React.PropTypes.Object.Required`
-
-#### updateMe run คำสั่ง `this.forceUpdate();`
-`React.PropTypes.func.Required`
-
 ### use จะใช้งานส่วนใดบ้าง default (false) ทุกตัว
 `React.PropTypes.object`
 ```javascript
@@ -58,8 +52,59 @@
 ### decorators (Overwrite การแสดงผลในส่วนต่างๆ)
 #### ดูจาก `src/components/decorators.js`
 #### รับต่าแค่ตัวที่จะ overwrite
+##### โดยจะได้
+```javascript
+Loading.propTypes = undefined;
 
-### animations (Overwrite Handle Animations )
+Toggle.propTypes = {
+    node: React.PropTypes.object.isRequired,
+    toggled: React.PropTypes.bool
+};
+
+Header.propTypes = {
+    node: React.PropTypes.object.isRequired,
+    options: React.PropTypes.object.isRequired
+};
+
+Selected.propTypes = {
+    node: React.PropTypes.object.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
+    options: React.PropTypes.object.isRequired
+};
+
+FirstChildSelected.propTypes = {
+    onEvent: React.PropTypes.func.isRequired
+};
+
+ColSelected.propTypes = {
+    maxLevel: React.PropTypes.number.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
+    colSelected: React.PropTypes.array
+};
+
+SearchTree.propTypes = {
+    onEvent: React.PropTypes.func
+};
+```
+
+##### ระวังการ Overwrite decorators.Container ส่วนนี้ default เป็นส่วนที่ส่งค่า props ด้านบนให้ decorators แต่ละตัว
+```javascript
+Container.propTypes = {
+    className: React.PropTypes.string,
+    decorators: React.PropTypes.object.isRequired,
+    terminal: React.PropTypes.bool.isRequired,
+    onEvent: React.PropTypes.func.isRequired,
+    animations: React.PropTypes.oneOfType([
+        React.PropTypes.object,
+        React.PropTypes.bool
+    ]).isRequired,
+    node: React.PropTypes.object.isRequired,
+    use: React.PropTypes.object,
+    options: React.PropTypes.object
+};
+```
+
+### [Velocity] animations (Overwrite Handle Animations)
 #### ดูจาก `src/components/decorators.js`
 #### รับต่าแค่ตัวที่จะ overwrite
 
@@ -67,3 +112,4 @@
 `React.PropTypes.func`
 #### arguments แต่ละตัวดูจาก `default/events.js, components/treeview.js, components/node.js`
 #### onToggle, onActive, onSelected, onSelectedCol, onFirstChildSelected, onSearch
+##### เมื่อ overwrite ให้เซตค่าตามที่ต้องการ ตาม arguments ที่ได้รับมา ดูตัวอย่างจาก events.js จากในไฟล์ข้างบน โดย arguments ที่ส่งเข้าแต่ละ event reference กับค่าต้นทางอยู่แล้วหากเรียบร้อยจะมี function _render สั่ง render ใหม่อีกรอบตาม cycle ปกติของ React
