@@ -6,7 +6,7 @@
 
 ### Install
 
-`npm install react-treebeard --save`
+`npm install zanroo-react-treeview --save`
 
 ### [Example] ดูใน
 
