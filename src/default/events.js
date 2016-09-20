@@ -21,23 +21,35 @@ const defaultMatcher = (filterText, node, options) => {
     return node[options.itemName].toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
 };
 
+const findNode = (node, filterText, matcher, options, founded = false) => {
+	const isMatcher = matcher(filterText, node, options);
+	if (!isMatcher) {
+		node.__TREEVIEW_VISIBLED = false;
+	}
+	if (founded) {
+		node.__TREEVIEW_VISIBLED = true;
+	}
+    return matcher(filterText, node, options) || // i match
+        (node[options.nodeName] && // or i have decendents and one of them match
+        node[options.nodeName].length &&
+        !!node[options.nodeName].find(child => findNode(child, filterText, matcher, options, founded)));
+};
+
 const setTreeNode = (list = [], filterText, options, founded = false) => {
-	list.forEach((e) => {
-		// define for next each founded change, founded use only children
-		let eFounded = founded;
-		const hasChildren = Array.isArray(e[options.nodeName]);
-		if (eFounded) {
-			e.__TREEVIEW_VISIBLED = true;
-		} else if (defaultMatcher(filterText, e, options)) {
-			eFounded = true;
-			e.__TREEVIEW_VISIBLED = true;
+	list
+	.filter(child => findNode(child, filterText, defaultMatcher, options, founded))
+	.forEach((e) => {
+		let eFound = founded;
+		if (defaultMatcher(filterText, e, options)) {
+			eFound = true;
 		} else {
-			e.__TREEVIEW_VISIBLED = false;
+			eFound = false;
 		}
-        if (hasChildren) {
-			setTreeNode(e[options.nodeName], filterText, options, eFounded);
-			e.__TREEVIEW_TOGGLED = true;
-			// e.__TREEVIEW_VISIBLED = true;
+		e.__TREEVIEW_VISIBLED = true;
+		e.__TREEVIEW_TOGGLED = true;
+		const hasChildren = Array.isArray(e[options.nodeName]);
+        if (hasChildren && e[options.nodeName].length) {
+			setTreeNode(e[options.nodeName], filterText, options, eFound);
         }
     });
 };
@@ -96,7 +108,7 @@ export default {
     },
     onSearch: ({value: ele, _render, data, _status, options}) => {
 		clearTimeout(_status.__TREEVIEW_SEARCHING_TIMEOUT);
-		const filterText = ele.target.value;
+		const filterText = ele.target.value.trim();
 		_status.__TREEVIEW_SEARCHING_TIMEOUT = setTimeout(() => {
 			_status.__TREEVIEW_ONSEARCHING = true;
 			_render();
