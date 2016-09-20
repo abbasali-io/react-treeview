@@ -107,7 +107,7 @@ class TreeView extends React.Component {
                 e.__TREEVIEW_VISIBLED = true;
                 e.__TREEVIEW_TOGGLED = true;
                 const children = e[this.props.options.nodeName];
-                if (Array.isArray(children)) {
+                if (Array.isArray(children) && children.length > 0) {
                     e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this.props.options.nodeName];
                     this._prepareData(children, maxLv + 1, _status, e.__TREEVIEW_LEVEL);
                 } else {
