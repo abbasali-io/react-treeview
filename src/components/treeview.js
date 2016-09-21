@@ -106,12 +106,13 @@ class TreeView extends React.Component {
                 e.__TREEVIEW_LEVEL = [...level, i];
                 e.__TREEVIEW_VISIBLED = true;
                 e.__TREEVIEW_TOGGLED = true;
-                const children = e[this.props.options.nodeName];
+                e[this._event.options.selectedName] = e[this._event.options.selectedName] ? true : false;
+                const children = e[this._event.options.nodeName];
                 if (Array.isArray(children) && children.length > 0) {
-                    e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this.props.options.nodeName];
+                    e.__TREEVIEW_LEVEL = [...e.__TREEVIEW_LEVEL, this._event.options.nodeName];
                     this._prepareData(children, maxLv + 1, _status, e.__TREEVIEW_LEVEL);
                 } else {
-                    e[this.props.options.nodeName] = [];
+                    e[this._event.options.nodeName] = [];
                 }
             });
         }
