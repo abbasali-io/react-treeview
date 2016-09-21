@@ -1,6 +1,6 @@
 {
   "name": "zanroo-react-treeview",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "React Tree View Component",
   "main": "index.js",
   "scripts": {
