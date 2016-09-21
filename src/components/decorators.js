@@ -13,9 +13,13 @@ const Loading = () => {
 
 const Toggle = (props) => {
     const toggled = props.toggled;
-    const glyphName = !toggled ? 'glyphicon glyphicon-plus' : 'glyphicon glyphicon-minus';
+    const toggledStyle = {
+        fontSize: '1.3em',
+        fontWeight: 'bolder'
+    };
+    const label = !toggled ? ' + ' : ' - ';
     return (
-        <span className={glyphName}></span>
+        <div style={toggledStyle}>{label}</div>
     );
 };
 
@@ -50,8 +54,12 @@ Selected.propTypes = {
 };
 
 const FirstChildSelected = (props) => {
+    const style = {
+        fontSize: '1.2em',
+        fontWeight: 'bolder'
+    };
     return (
-        <span className="glyphicon glyphicon-sort-by-attributes" onClick={() => props.onEvent('firstChild')}></span>
+        <div style={style} onClick={() => props.onEvent('firstChild')}>&#8694;</div>
     );
 };
 

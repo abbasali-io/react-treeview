@@ -72,7 +72,7 @@ class TreeView extends React.Component {
                         colSelected={this._event._status.__TREEVIEW_COL_SELECTED}
                     />
                 }
-                <ul className="treeview-node list-group" ref="treeBase">
+                <ul className="treeview-node" ref="treeBase">
                     {data.map((node, index) =>
                         <TreeNode
                             key={node.id || index}

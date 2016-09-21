@@ -64,7 +64,7 @@ class TreeNode extends React.Component {
             <VelocityTransitionGroup {...animations.searchItem}>
                 {
                     !this.props._status.__TREEVIEW_ONSEARCHING &&
-                    <li className="treeview-node-item list-group-item" ref="topLevel">
+                    <li className="treeview-node-item" ref="topLevel">
                         { this.renderHeader(decorators, animations) }
                         { this.props.node[this._event.options.nodeName].length > 0 && this.renderDrawer(decorators, animations) }
                     </li>
@@ -104,7 +104,7 @@ class TreeNode extends React.Component {
         if(this.props.node.loading && this.props.node.__TREEVIEW_VISIBLED){ return this.renderLoading(decorators); }
         const children = this.props.node[this._event.options.nodeName];
         return (
-            <ul className="treeview-node list-group" ref="subtree">
+            <ul className="treeview-node" ref="subtree">
                 {children.map((child, index) =>
                     <TreeNode
                         key={child.id || index}
@@ -118,8 +118,8 @@ class TreeNode extends React.Component {
     }
     renderLoading(decorators){
         return (
-            <ul className="treeview-node list-group">
-                <li className="treeview-node-item list-group-item">
+            <ul className="treeview-node">
+                <li className="treeview-node-item">
                     <decorators.Loading/>
                 </li>
             </ul>

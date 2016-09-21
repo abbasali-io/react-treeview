@@ -3,7 +3,7 @@
 export default {
     toggle: (props) => {
         return {
-            animation: { rotateZ: props.node.toggled ? 180 : 0 },
+            animation: { rotateZ: props.node.__TREEVIEW_TOGGLED ? 360 : 0 },
             duration: 200
         };
     },
@@ -11,11 +11,11 @@ export default {
         return {
             enter: {
                 animation: 'slideDown',
-                duration: 150
+                duration: 300
             },
             leave: {
                 animation: 'slideUp',
-                duration: 150
+                duration: 300
             }
         };
     },
@@ -23,11 +23,11 @@ export default {
         return {
             enter: {
                 animation: { opacity: 1 },
-                duration: 150
+                duration: 200
             },
             leave: {
                 animation: { opacity: 0 },
-                duration: 150
+                duration: 100
             }
         };
     }
