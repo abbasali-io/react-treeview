@@ -135,6 +135,7 @@ class Container extends React.Component {
                     (
                         use.firstChildSelect &&
                         Array.isArray(node[this.props.options.nodeName]) &&
+                        node[this.props.options.nodeName].length > 0 &&
                         !node.loading
                     ) &&
                     <div className="selected firstChild" style={{display: 'inline-block'}}>
