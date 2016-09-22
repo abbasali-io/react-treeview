@@ -1,4 +1,4 @@
-:global .treeview .search {
+.treeview .search {
     position: relative;
     display: table;
     border-collapse: separate;
@@ -8,7 +8,7 @@
     margin-bottom: 0;
 }
 
-:global .treeview .search input 
+.treeview .search input 
 {
     display: block;
     width: 100%;
@@ -29,29 +29,29 @@
 }
 
 
-:global .treeview .col-selected {
+.treeview .col-selected {
     padding: 0 0 0 28px;
 }
-:global .treeview .toggle,
-:global .treeview .header {
+.treeview .toggle,
+.treeview .header {
     display: inline-block !important;
 }
-:global .treeview .toggle {
+.treeview .toggle {
     cursor: pointer !important;
     min-width: 14px;
 }
 
-:global .treeview .treeview-node {
+.treeview .treeview-node {
     margin:0 0 0 10px;
     padding:0;
     list-style:none;
     position:relative;
 }
 
-:global .treeview .treeview-node {margin-left:4px}
+.treeview .treeview-node {margin-left:4px}
 
-:global .treeview:before,
-:global .treeview .treeview-node:before {
+.treeview:before,
+.treeview .treeview-node:before {
     content:"";
     display:block;
     width:0;
@@ -62,14 +62,14 @@
     border-left:1px solid;
 }
 
-:global .treeview .treeview-node-item {
+.treeview .treeview-node-item {
     margin:0;
     padding:0 10px;
     line-height:2em;
     position:relative;
 }
 
-:global .treeview .treeview-node-item:before {
+.treeview .treeview-node-item:before {
     content:"";
     display:block;
     width:10px;
@@ -80,7 +80,7 @@
     top:1em;
     left:0;
 }
-:global .treeview .treeview-node-item.last-child:before {
+.treeview .treeview-node-item.last-child:before {
     background:white;
     height:auto;
     top:1em;

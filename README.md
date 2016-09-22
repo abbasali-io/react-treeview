@@ -24,8 +24,9 @@
 
 ## How to use
 ```javascript
-import {TreeView, style} from "zanroo-react-treeview"
-// You can do not be imported style, style is default TreeView Theme
+import TreeView from "zanroo-react-treeview"
+import '../src/default/style.css';
+// You can embed style manual
 ..
 ..
 
@@ -33,6 +34,7 @@ render() {
     return <TreeView data={yoursData} {...other} />
 }
 ```
+Default Theme Styles: (https://github.com/zanroo/react-treeview/blob/master/src/default/style.css)
 
 ## Prop Values Required
 

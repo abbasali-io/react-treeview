@@ -41,7 +41,7 @@ module.exports = {
             exclude: [/node_modules/],
             loaders: [
                 'style-loader',
-                'css-loader?module&localIdentName=[local]___[hash:base64:5]',
+                'css-loader',
                 'postcss-loader'
             ]
         }]

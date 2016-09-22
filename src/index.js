@@ -1,5 +1,2 @@
 'use strict';
-module.exports = {
-	TreeView: require('./components/treeview'),
-	style: require('./default/style.css')
-};
+module.exports = require('./components/treeview');

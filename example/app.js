@@ -3,35 +3,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {TreeView, style} from '../src/index';
+import TreeView from '../src/index';
 import data from './data';
 
-console.log(style);
+import '../src/default/style.css';
+
 // import * as filters from './filter';
 
 // Example: Customising The Header Decorator To Include Icons
 // const decorators = {};
-// decorators.Header = (props) => {
-//     const style = props.style;
-//     const iconType = props.node.children ? 'folder' : 'file-text';
-//     const iconClass = `fa fa-${iconType}`;
-//     const iconStyle = { marginRight: '5px' };
-//     return (
-//         <div style={style.base}>
-//             <div style={style.title}>
-//                 <i className={iconClass} style={iconStyle}/>
-//                 {props.node.name}
-//             </div>
-//         </div>
-//     );
-// };
-// decorators.Loading = (props) => { ...... }
-// decorators.Toggle = (props) => { ...... }
-// decorators.Header = (props) => { ...... }
-// decorators.Selected = (props) => { ...... }
-// decorators.FirstChildSelected = (props) => { ...... }
-// decorators.ColSelected = (props) => { ...... }
-// decorators.SearchTree = (props) => { ...... }
+/*
+decorators.Header = (props) => {
+    const style = props.style;
+    const iconType = props.node.children ? 'folder' : 'file-text';
+    const iconClass = `fa fa-${iconType}`;
+    const iconStyle = { marginRight: '5px' };
+    return (
+        <div style={style.base}>
+            <div style={style.title}>
+                <i className={iconClass} style={iconStyle}/>
+                {props.node.name}
+            </div>
+        </div>
+    );
+};
+decorators.Loading = (props) => { ...... }
+decorators.Toggle = (props) => { ...... }
+decorators.Header = (props) => { ...... }
+decorators.Selected = (props) => { ...... }
+decorators.FirstChildSelected = (props) => { ...... }
+decorators.ColSelected = (props) => { ...... }
+decorators.SearchTree = (props) => { ...... }
+*/
 
 class DemoTree extends React.Component {
     constructor(props){
@@ -52,7 +55,7 @@ class DemoTree extends React.Component {
     // }
     render(){
         return (
-            <div className={style.body}>
+            <div>
                 <TreeView
                     data={this.state.data}
                     use={
