@@ -22,6 +22,18 @@
 ### แก้เสร็จแล้ว จะ build สำหรับ prepublish ขึ้น npm
 `npm run prepublish`
 
+## How to use
+```javascript
+import {TreeView, style} from "zanroo-react-treeview"
+// You can do not be imported style, style is default TreeView Theme
+..
+..
+
+render() {
+    return <TreeView data={yoursData} {...other} />
+}
+```
+
 ## Prop Values Required
 
 ### data
