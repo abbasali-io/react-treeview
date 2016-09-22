@@ -91,12 +91,8 @@ ColSelected.propTypes = {
 
 const SearchTree = (props) => {
     return (
-        <div className="input-group">
-            <span className="input-group-addon">
-              <i className="fa fa-search"></i>
-            </span>
+        <div className="search">
             <input type="text"
-                className="form-control"
                 placeholder="Search the tree..."
                 onKeyUp={(e) => props.onEvent('search', e)}
             />
@@ -118,9 +114,8 @@ class Container extends React.Component {
             <div
                 ref="clickable"
                 className={className}
-                onClick={use.active ? () => onEvent('active') : ()=>{}}
-                style={{cursor: 'pointer'}}>
-                <div onClick={() => onEvent()} className="toggle" style={{display: 'inline-block'}}>
+                onClick={use.active ? () => onEvent('active') : ()=>{}}>
+                <div onClick={() => onEvent()} className="toggle" style={{display: 'inline-block', cursor: 'pointer'}}>
                     { !terminal ? this.renderToggle() : null }
                 </div>
                 {
@@ -133,7 +128,7 @@ class Container extends React.Component {
                         />
                     </div>
                 }
-                <div className="header" style={{display: 'inline-block'}}>
+                <div className="header" style={{display: 'inline-block', cursor: use.active ? 'pointer' : 'default'}}>
                     <decorators.Header
                         node={node}
                         options={this.props.options}
@@ -146,7 +141,7 @@ class Container extends React.Component {
                         node[this.props.options.nodeName].length > 0 &&
                         !node.loading
                     ) &&
-                    <div className="selected firstChild" style={{display: 'inline-block'}}>
+                    <div className="selected first-child" style={{display: 'inline-block', cursor: 'pointer'}}>
                         <decorators.FirstChildSelected onEvent={onEvent} />
                     </div>
                 }

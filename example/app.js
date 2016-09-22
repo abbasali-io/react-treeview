@@ -2,9 +2,11 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TreeView from '../src/index';
 
+import {TreeView, style} from '../src/index';
 import data from './data';
+
+console.log(style);
 // import * as filters from './filter';
 
 // Example: Customising The Header Decorator To Include Icons
@@ -50,7 +52,7 @@ class DemoTree extends React.Component {
     // }
     render(){
         return (
-            <div>
+            <div className={style.body}>
                 <TreeView
                     data={this.state.data}
                     use={
@@ -58,7 +60,8 @@ class DemoTree extends React.Component {
                             select: true,
                             firstChildSelect: true,
                             colSelect: true,
-                            search: true
+                            search: true,
+                            active: true
                         }
                     }
                     options={

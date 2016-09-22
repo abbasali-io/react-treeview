@@ -1,6 +1,8 @@
 'use strict';
 
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
+var precss = require('precss');
 
 module.exports = {
     entry: [
@@ -33,10 +35,22 @@ module.exports = {
             test: /\.js$/,
             exclude: [/node_modules/],
             loaders: ['react-hot', 'babel-loader']
+        },
+        {
+            test: /\.css$/,
+            exclude: [/node_modules/],
+            loaders: [
+                'style-loader',
+                'css-loader?module&localIdentName=[local]___[hash:base64:5]',
+                'postcss-loader'
+            ]
         }]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
-    ]
+    ],
+    postcss: function() {
+        return [autoprefixer];
+    }
 };

@@ -60,11 +60,18 @@ class TreeNode extends React.Component {
         const decorators = this.decorators();
         const animations = this.animations();
         if (this.props.node.__TREEVIEW_VISIBLED) {
+            let nodeClassName = 'treeview-node-item';
+            if (this.props.firstChild) {
+                nodeClassName += ' first-child';
+            }
+            if (this.props.lastChild){
+                nodeClassName += ' last-child';
+            }
             return (
             <VelocityTransitionGroup {...animations.searchItem}>
                 {
                     !this.props._status.__TREEVIEW_ONSEARCHING &&
-                    <li className="treeview-node-item" ref="topLevel">
+                    <li className={nodeClassName} ref="topLevel">
                         { this.renderHeader(decorators, animations) }
                         { this.props.node[this._event.options.nodeName].length > 0 && this.renderDrawer(decorators, animations) }
                     </li>
@@ -109,6 +116,8 @@ class TreeNode extends React.Component {
                     <TreeNode
                         key={child.id || index}
                         node={child}
+                        firstChild={(index === 0)}
+                        lastChild={(children.length - 1 === index)}
                         _event={this._event}
                         {...this._event}
                     />
@@ -117,9 +126,17 @@ class TreeNode extends React.Component {
         );
     }
     renderLoading(decorators){
+        let nodeClassName = 'treeview-node-item';
+        if (this.props.firstChild) {
+            nodeClassName += ' first-child';
+        }
+        if (this.props.lastChild){
+            nodeClassName += ' last-child';
+        }
+
         return (
             <ul className="treeview-node">
-                <li className="treeview-node-item">
+                <li className={nodeClassName}>
                     <decorators.Loading/>
                 </li>
             </ul>
@@ -129,6 +146,8 @@ class TreeNode extends React.Component {
 
 TreeNode.propTypes = {
     node: React.PropTypes.object.isRequired,
+    firstChild: React.PropTypes.bool,
+    lastChild: React.PropTypes.bool,
     _status: React.PropTypes.oneOfType([
         React.PropTypes.object,
         React.PropTypes.array

@@ -75,8 +75,10 @@ class TreeView extends React.Component {
                 <ul className="treeview-node" ref="treeBase">
                     {data.map((node, index) =>
                         <TreeNode
-                            key={node.id || index}
+                            key={index}
                             node={node}
+                            firstChild={(index === 0)}
+                            lastChild={(data.length - 1 === index)}
                             _event={this._event}
                             {...this._event}
                         />
