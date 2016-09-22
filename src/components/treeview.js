@@ -24,7 +24,7 @@ class TreeView extends React.Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
+        if (this.props !== nextProps) {
             this._prepareData(nextProps.data);
             for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
                 this._status.__TREEVIEW_COL_SELECTED.push(false);
