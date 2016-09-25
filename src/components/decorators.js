@@ -13,13 +13,15 @@ const Loading = () => {
 
 const Toggle = (props) => {
     const toggled = props.toggled;
-    const toggledStyle = {
-        fontSize: '1.3em',
-        fontWeight: 'bolder'
+    const icon = !toggled ?
+    'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iMzJweCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzIgMzI7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxnIGlkPSJMYXllcl8xIi8+PGcgaWQ9InBsdXNfeDVGX2FsdCI+PHBhdGggZD0iTTE2LDBDNy4xNjQsMCwwLDcuMTY0LDAsMTZzNy4xNjQsMTYsMTYsMTZzMTYtNy4xNjQsMTYtMTZTMjQuODM2LDAsMTYsMHogTTI0LDE4aC02djZoLTR2LTZIOHYtNGg2ICAgVjhoNHY2aDZWMTh6IiBzdHlsZT0iZmlsbDojNEU0RTUwOyIvPjwvZz48L3N2Zz4=' :
+    'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iMzJweCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzIgMzI7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxnIGlkPSJMYXllcl8xIi8+PGcgaWQ9Im1pbnVzX3g1Rl9hbHQiPjxwYXRoIGQ9Ik0xNiwwQzcuMTY0LDAsMCw3LjE2NCwwLDE2czcuMTY0LDE2LDE2LDE2czE2LTcuMTY0LDE2LTE2UzI0LjgzNiwwLDE2LDB6IE0yNCwxOEg4di00aDE2VjE4eiIgc3R5bGU9ImZpbGw6IzRFNEU1MDsiLz48L2c+PC9zdmc+';
+    const style = {
+        width: '14px',
+        height: 'auto'
     };
-    const label = !toggled ? ' + ' : ' - ';
     return (
-        <div style={toggledStyle}>{label}</div>
+        <img src={icon} style={style}/>
     );
 };
 
@@ -55,12 +57,11 @@ Selected.propTypes = {
 
 const FirstChildSelected = (props) => {
     const style = {
-        fontSize: '1.2em',
-        fontWeight: 'bolder'
+        width: '14px',
+        height: 'auto'
     };
-    return (
-        <div style={style} onClick={() => props.onEvent('firstChild')}>&#8694;</div>
-    );
+    const icon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iOTYiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDk2IDk2IiB3aWR0aD0iOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik01Mi4yMDQgNjAuNjY0bDExLjcyLTcuODEyYzEuMTk2IDAuNzEyIDIuNTc2IDEuMTQ4IDQuMDY4IDEuMTQ4IDQuNDEyIDAgOC0zLjU4NCA4LThzLTMuNTg4LTgtOC04Yy00LjM1NiAwLTcuOTA0IDMuNTA4LTcuOTg0IDcuODUybC04LjAxNiA1LjM0NHYtMTQuNDMyYzAuMDc2LTAuMDQwIDAuMTUyLTAuMDU2IDAuMjItMC4wOTZsMTEuNzE2LTcuODEyYzEuMiAwLjcxNiAyLjU4IDEuMTQ4IDQuMDcyIDEuMTQ4IDQuNDE2IDAgOC0zLjU4NCA4LThzLTMuNTg0LTgtOC04Yy00LjM2IDAtNy45MDggMy41MDgtNy45ODQgNy44NTJsLTguMDI0IDUuMzQ0di0yNy4yaC04djE1LjE5NmwtOC4wMTYtNS4zNDRjLTAuMDg0LTQuMzQ0LTMuNjI0LTcuODUyLTcuOTg0LTcuODUyLTQuNDEyIDAtOCAzLjU4NC04IDhzMy41ODggOCA4IDhjMS40OTIgMCAyLjg2OC0wLjQzNiA0LjA2OC0xLjE0OGwxMS43MTYgNy44MTJjMC4wNjggMC4wNDggMC4xNDggMC4wNjQgMC4yMiAwLjF2MTQuNDI0bC04LjAxNi01LjM0Yy0wLjA4NC00LjM0NC0zLjYyOC03Ljg1Mi03Ljk4NC03Ljg1Mi00LjQxMiAwLTggMy41ODQtOCA4IDAgNC40MTIgMy41ODggOCA4IDggMS40OTIgMCAyLjg3Mi0wLjQzMiA0LjA2OC0xLjE0OGwxMS43MTYgNy44MTJjMC4wNjggMC4wNTIgMC4xNDggMC4wNjggMC4yMiAwLjA5NnYxNC40MjhsLTguMDE2LTUuMzQ0Yy0wLjA4NC00LjM0LTMuNjI4LTcuODQ4LTcuOTg0LTcuODQ4LTQuNDEyIDAtOCAzLjU4NC04IDhzMy41ODggOCA4IDhjMS40OTIgMCAyLjg3Mi0wLjQzNiA0LjA2OC0xLjE0OGwxMS43MTYgNy44MTJjMC4wNjggMC4wNDggMC4xNDggMC4wNjQgMC4yMiAwLjF2MjMuMjQ0aDh2LTExLjIzNmMwLjA3Ni0wLjA0MCAwLjE1Mi0wLjA2MCAwLjIyLTAuMWwxMS43MTYtNy44MTJjMS4yIDAuNzEyIDIuNTggMS4xNDggNC4wNzIgMS4xNDggNC40MTYgMCA4LTMuNTg0IDgtOHMtMy41ODQtOC04LThjLTQuMzU2IDAtNy45MDggMy41MDgtNy45ODQgNy44NTJsLTguMDE2IDUuMzQ0di0xNC40MjhjMC4wNDQtMC4wNDAgMC4xMjQtMC4wNTYgMC4xOTItMC4xMDR6IiBmaWxsPSIjMDAwMDAwIi8+PC9zdmc+';
+    return <img onClick={() => props.onEvent('firstChild')} src={icon} style={style} />;
 };
 
 FirstChildSelected.propTypes = {
@@ -78,6 +79,7 @@ const ColSelected = (props) => {
     }
     return (
         <div className="col-selected">
+            <input type="checkbox" checked={colSelected.all} onChange={() => onEvent('col', 'all')}/>
             {items}
         </div>
     );
@@ -86,7 +88,7 @@ const ColSelected = (props) => {
 ColSelected.propTypes = {
     maxLevel: React.PropTypes.number.isRequired,
     onEvent: React.PropTypes.func.isRequired,
-    colSelected: React.PropTypes.array
+    colSelected: React.PropTypes.object
 };
 
 const SearchTree = (props) => {

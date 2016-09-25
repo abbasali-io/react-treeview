@@ -3,7 +3,7 @@
 export default {
     toggle: (props) => {
         return {
-            animation: { rotateZ: props.node.__TREEVIEW_TOGGLED ? 360 : 0 },
+            animation: { opacity: props.node.__TREEVIEW_TOGGLED ? 1 : 0.8 },
             duration: 200
         };
     },

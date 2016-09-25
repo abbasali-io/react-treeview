@@ -7,11 +7,11 @@ const setColNode = (
 		options,
 		lv = 0
 ) => list.forEach((e) => {
-	if (lv === maxLv || maxLv === 0) {
+	if (lv === maxLv || maxLv === 'all') {
 		e[options.selectedName] = selected;
 	}
     if (Array.isArray(e[options.nodeName])) {
-		if (lv <= maxLv || maxLv === 0) {
+		if (lv <= maxLv || maxLv === 'all') {
 			setColNode(e[options.nodeName], maxLv, selected, options, lv + 1);
 		}
     }

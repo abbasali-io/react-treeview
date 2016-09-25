@@ -12,7 +12,7 @@ class TreeView extends React.Component {
     constructor(props){
         super(props);
         this._status = {};
-        this._status.__TREEVIEW_COL_SELECTED = [];
+        this._status.__TREEVIEW_COL_SELECTED = {};
         this.onEvent = this.onEvent.bind(this);
         this._render = this._render.bind(this);
 
@@ -20,14 +20,16 @@ class TreeView extends React.Component {
 
         this._prepareData();
         for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
-            this._status.__TREEVIEW_COL_SELECTED.push(false);
+            this._status.__TREEVIEW_COL_SELECTED[i] = false;
         }
     }
     componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
+            this._status = {};
+            this._status.__TREEVIEW_COL_SELECTED = {};
             this._prepareData(nextProps.data);
             for (var i = 0; i <= this._status.__TREEVIEW_MAXLEVEL; i++) {
-                this._status.__TREEVIEW_COL_SELECTED.push(false);
+                this._status.__TREEVIEW_COL_SELECTED[i] = false;
             }
             this._render();
         }
