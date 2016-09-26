@@ -18,7 +18,7 @@ const setColNode = (
 });
 
 const defaultMatcher = (filterText, node, options) => {
-    return node[options.itemName].toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
+    return node[options.itemName].toString().toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
 };
 
 const findNode = (node, filterText, matcher, options, founded = false) => {
